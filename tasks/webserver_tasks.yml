@@ -1,0 +1,25 @@
+    - name: installing dependencies
+      apt: 
+          pkg:
+            - python
+            - python-setuptools
+            - python-dev
+            - build-essential
+            - python-pip
+            - python-mysqldb
+            - python3-pip
+          state: present
+          update_cache: true
+
+    - name: install flask and flask dependencies
+      pip:
+       name: 
+        - flask
+        - flask-mysql
+       executable: pip3
+    - name: copy app.py 
+      copy:
+        src: app.py
+        dest: app.py
+    - name: start flask app
+      shell: FLASK_APP=app.py nohup flask run --host=0.0.0.0 &
