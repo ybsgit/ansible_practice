@@ -1,0 +1,13 @@
+- name: deploy web and db server
+  hosts: all
+  tasks:
+    - name: installing dependencies
+      apt: 
+         pkg:
+            - python
+            - python-setuptools
+            - python-dev
+            - build-essential
+            - python-pip
+            - python-mysqldb
+            - python3-pip

@@ -1,50 +1,53 @@
 - name: deploy web and db server
   hosts: all
-
   tasks:
-  - name: installing dependencies
-    apt: 
-      - pkg:
-          - python
-          - python-setuptools
-          - python-dev
-          - build-essential
-          - python-pip
-          - python-mysqldb
-          - python3-pip
+    - name: installing dependencies
+      apt: 
+          pkg:
+            - python
+            - python-setuptools
+            - python-dev
+            - build-essential
+            - python-pip
+            - python-mysqldb
+            - python3-pip
+          state: present
+          update_cache: true
+
+    - name: installing mysql server
+      apt:
+          pkg:
+            - mysql-server
+            - mysql-client
+
+    - name: start mysql service
+      service:
+        name: mysql
+        state: started
+
+
+    - name: Create new databases with name employee_db
+      mysql_db:
+        name:
+          - employee_db
         state: present
-        update_cache: true
 
-  - name: installing mysql server
-    apt:
-      - pkg:
-          - mysql-server
-          - mysql-client
+    - name: Create database user with name 'db_user' and password 'Passw0rd' with all database privileges
+      mysql_user:
+        name: db_user
+        password: Passw0rd
+        priv: '*.*:ALL'
+        state: present
 
-  - name: start mysql service
-    service:
-     - name: mysql
-       state: started
-
-
-  - name: Create new databases with name employee_db
-    mysql_db:
-      name:
-        - employee_db
-      state: present
-
-  - name: Create database user with name 'db_user' and password 'Passw0rd' with all database privileges
-    mysql_user:
-      name: db_user
-      password: Passw0rd
-      priv: '*.*:ALL'
-      state: present
-
-  - name: install flask and flask dependencies
-    pip: 
-     name: 
-      - flask
-      - flask-mysql
-      
-  - name: start flask app
-    command: FLASK_APP=app.py flask run --host=0.0.0.0
+    - name: install flask and flask dependencies
+      pip:
+       name: 
+        - flask
+        - flask-mysql
+       executable: pip3
+    - name: copy app.py 
+      copy:
+        src: app.py
+        dest: app.py
+    - name: start flask app
+      shell: FLASK_APP=app.py nohup flask run --host=0.0.0.0 &
