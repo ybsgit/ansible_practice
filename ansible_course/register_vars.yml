@@ -1,0 +1,14 @@
+- name: deploy example static website
+  hosts: all
+  vars: 
+    webserver: nginx
+    webserver_root_dir: /var/www/html 
+  tasks:
+    - name: install webserver 
+      package:
+        name: "{{webserver}}"
+        state: present
+      register: output
+    - name: printoutput
+      debug:
+        var: output

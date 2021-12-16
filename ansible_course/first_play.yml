@@ -1,0 +1,20 @@
+- name: create and archive files
+  hosts: all
+  tasks:
+    - name: create  hello.txt file
+      copy: 
+        dest: /tmp/hello.txt
+        content: |
+          hello hello.txt!
+    - name: create  hi.txt file
+      copy: 
+        dest: /tmp/hi.txt
+        content: |
+            hi hi.txt!
+    - name: zipping hello.txt and hi.txt
+      archive:
+        path: 
+          - /tmp/hello.txt
+          - /tmp/hi.txt
+        dest: /tmp/zip.zip
+        format: zip

@@ -1,0 +1,7 @@
+- name: deploy example static website
+  hosts: prod
+  tasks:
+    - name: install webserver 
+      package:
+        name: nginx
+        state: present

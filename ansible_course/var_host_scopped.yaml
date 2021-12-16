@@ -1,0 +1,28 @@
+- name: deploy example static website
+  hosts: prod,dev
+  vars: 
+    webserver: nginx
+    webserver_root_dir: /var/www/html 
+    git_branch: ansible-course
+  tasks:
+    - name: install webserver apache
+      package:
+        name: "{{webserver}}"
+        state: present
+    - name: start apache2 service
+      service: 
+        name: "{{webserver}}"
+        state: started
+    - name: ensure documet root exists
+      file:
+        path: "{{webserver_root_dir}}"
+        state: directory
+    - name: clone static website repo
+      git:
+        repo: https://github.com/ybsgit/example-static-website
+        dest: /var/www/html/website
+    - name: Download index.html file
+      get_url:
+        url: https://raw.githubusercontent.com/ybsgit/example-static-website/{{git_branch}}/index.html
+        dest: "{{webserver_root_dir}}"
+        force: yes
