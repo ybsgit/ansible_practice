@@ -1,0 +1,4 @@
+ansible_host: 10.182.0.12 
+ansible_user: root 
+ansible_private_key_file: /root/.ssh/id_rsa
+git_branch: ansible-course

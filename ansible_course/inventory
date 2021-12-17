@@ -1,20 +1,15 @@
 # host vars
-dev ansible_host=10.182.0.12 ansible_user=root ansible_private_key_file=/root/.ssh/id_rsa
+dev 
 prod1 ansible_host=10.182.0.13 
 prod2 ansible_host=10.182.0.14 
 
 [dev]
 dev
 
-[dev:vars]
-git_branch=ansible-course
 
 [prod]
 prod1
 prod2
 
 # group vars
-[prod:vars]
-ansible_user=root 
-ansible_private_key_file=/root/.ssh/id_rsa
-git_branch= ansible-course-index-v2
+
